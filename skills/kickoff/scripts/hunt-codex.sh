@@ -44,7 +44,7 @@ ARGS=(exec --skip-git-repo-check --ephemeral -C "$WORK"
 
 if [ "$CHECK" = 1 ]; then
   CTO="${TO:+${TO%% *} 120}"
-  $CTO codex "${ARGS[@]}" -o "$WORK/check.txt" "Reply with exactly: OK" >"$WORK/log.txt" 2>&1
+  $CTO codex "${ARGS[@]}" -o "$WORK/check.txt" "Reply with exactly: OK" </dev/null >"$WORK/log.txt" 2>&1
   if grep -q '^OK' "$WORK/check.txt" 2>/dev/null; then
     echo "codex: OK ($(codex --version 2>/dev/null), model: ${MODEL:-config default}, effort: $EFFORT)"; exit 0
   fi
@@ -69,7 +69,7 @@ $(cat "$BRIEF")
 EOF
 )"
 
-$TO codex "${ARGS[@]}" --output-schema "$SCHEMA" -o "$OUT" "$PROMPT" >"$WORK/log.txt" 2>&1
+$TO codex "${ARGS[@]}" --output-schema "$SCHEMA" -o "$OUT" "$PROMPT" </dev/null >"$WORK/log.txt" 2>&1
 rc=$?
 if [ $rc -ne 0 ] || [ ! -s "$OUT" ]; then
   echo "hunt failed (rc=$rc). Last log lines:" >&2; tail -5 "$WORK/log.txt" >&2; exit 1
