@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["gap", "source_searched", "queries_run", "candidates", "notes"],
+  "properties": {
+    "gap": { "type": "string", "description": "The capability gap this hunt was for." },
+    "source_searched": { "type": "string", "description": "Which source(s) this hunter searched." },
+    "queries_run": { "type": "array", "items": { "type": "string" }, "description": "Exact queries/commands run, so the search is reproducible." },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "id", "url", "what_it_does", "why_it_fits", "concerns", "stars", "license", "last_push", "install_or_use"],
+        "properties": {
+          "kind": { "type": "string", "enum": ["skill", "plugin", "repo", "library", "other"] },
+          "id": { "type": "string", "description": "owner/repo, owner/repo@skill, or plugin@marketplace" },
+          "url": { "type": "string" },
+          "what_it_does": { "type": "string", "description": "One sentence, from its own README/SKILL.md, not guessed." },
+          "why_it_fits": { "type": "string", "description": "Which part of the gap it covers. Say 'partial' and what's missing if partial." },
+          "concerns": { "type": "string", "description": "Licence, staleness, stack mismatch, scripts/hooks/network calls seen, overlap. 'none seen' if none." },
+          "stars": { "type": ["integer", "null"], "description": "From gh api, or null if not checked." },
+          "license": { "type": ["string", "null"] },
+          "last_push": { "type": ["string", "null"], "description": "YYYY-MM-DD from gh api, or null." },
+          "install_or_use": { "type": "string", "description": "Exact install command, or the file paths worth borrowing. Never run it." }
+        }
+      }
+    },
+    "notes": { "type": "string", "description": "Anything the orchestrator should know: dead ends, better keywords, nothing-found." }
+  }
+}
